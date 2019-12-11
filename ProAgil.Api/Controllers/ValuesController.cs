@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProAgil.Api.Contexts;
 using ProAgil.Api.Models;
 
@@ -20,16 +22,44 @@ namespace ProAgil.Api.Controllers
 
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<Evento>> Get()
+        public async Task<IActionResult> Get()
         {
-            return _context.Evento.ToList();
+            try
+            {
+                var results = await _context.Evento.ToListAsync();
+
+                if(results == null)
+                    return NoContent();
+
+                return Ok(results);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao encontrar os eventos.\n Erro: {e.Message}");
+            }
+
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            try
+            {
+                if(id == 0)
+                    return BadRequest($"Informe um {nameof(id)} válido.");
+
+                var result = await _context.Evento.FirstOrDefaultAsync(x => x.IdEvento == id);
+                if(result == null)
+                    return NoContent();
+
+                return Ok(result);
+            }
+            catch (System.Exception e)
+            {
+                
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao encontrar os eventos.\n Erro: {e.Message}");
+            }
         }
 
         // POST api/values
