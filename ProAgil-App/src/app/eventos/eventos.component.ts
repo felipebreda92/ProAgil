@@ -21,7 +21,7 @@ export class EventosComponent implements OnInit {
       this.eventos = response;
       console.log(this.eventos);
     },error => {
-      console.log(error); 
+      console.log(error);
     });
   }
 
