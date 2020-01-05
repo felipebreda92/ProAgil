@@ -15,8 +15,10 @@ export class EventosComponent implements OnInit {
   }
   set filtroLista(value: string){
     this._filtroLista = value;
+    this.eventosFiltrados = this.filtroLista ? this.filtrarLista(this.filtroLista) : this.eventos;
   }
 
+  eventosFiltrados: any = [];
   eventos: any = [];
   imagemLargura = 50;
   imagemMargem = 2;
@@ -32,9 +34,18 @@ export class EventosComponent implements OnInit {
       this.mostrarImagem = !this.mostrarImagem;
   }
 
+  filtrarLista(filtroLista: string): any {
+    filtroLista = filtroLista.toLocaleLowerCase();
+
+    return this.eventos.filter(
+      evento => evento.tema.toLocaleLowerCase().indexOf(filtroLista) !== -1
+    );
+  }
+
   getEventos(){
       this.http.get('https://localhost:5001/api/values').subscribe(response =>{
       this.eventos = response;
+      this.eventosFiltrados = this.eventos;
       console.log(this.eventos);
     },error => {
       console.log(error);
