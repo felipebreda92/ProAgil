@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProAgil.Api.Contexts;
-using ProAgil.Api.Models;
+using ProAgil.Domain.Models;
 
 namespace ProAgil.Api.Controllers
 {
@@ -49,7 +49,7 @@ namespace ProAgil.Api.Controllers
                 if(id == 0)
                     return BadRequest($"Informe um {nameof(id)} válido.");
 
-                var result = await _context.Evento.FirstOrDefaultAsync(x => x.IdEvento == id);
+                var result = await _context.Evento.FirstOrDefaultAsync(x => x.Id == id);
                 if(result == null)
                     return NoContent();
 

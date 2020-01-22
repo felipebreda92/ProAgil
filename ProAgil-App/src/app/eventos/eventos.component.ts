@@ -10,10 +10,10 @@ export class EventosComponent implements OnInit {
 
   _filtroLista: string;
 
-  get filtroLista(): string{
+  get filtroLista(): string {
     return this._filtroLista;
   }
-  set filtroLista(value: string){
+  set filtroLista(value: string) {
     this._filtroLista = value;
     this.eventosFiltrados = this.filtroLista ? this.filtrarLista(this.filtroLista) : this.eventos;
   }
@@ -43,11 +43,11 @@ export class EventosComponent implements OnInit {
   }
 
   getEventos(){
-      this.http.get('https://localhost:5001/api/values').subscribe(response =>{
+      this.http.get('https://localhost:5001/api/values').subscribe(response => {
       this.eventos = response;
       this.eventosFiltrados = this.eventos;
       console.log(this.eventos);
-    },error => {
+    }, error => {
       console.log(error);
     });
   }
